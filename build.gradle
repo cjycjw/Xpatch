@@ -11,11 +11,12 @@ defaultTasks('clean','distZip')
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-
-
-
+    sourceCompatibility = 8
+    targetCompatibility = 8
+    compileJava {
+        options.fork = true
+        options.forkOptions.javaHome = file('/Library/Java/JavaVirtualMachines/jdk-14.jdk/Contents/Home')
+    }
 //    task packageSources(type: Jar) {
 //        classifier = 'sources'
 //        from sourceSets.main.allSource

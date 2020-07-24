@@ -6,6 +6,7 @@ import com.storm.wind.xpatch.util.ShellCmdUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.zip.ZipFile;
 
 /**
  * Created by Wind
@@ -18,10 +19,20 @@ public class BuildAndSignApkTask implements Runnable {
 
     private String unzipApkFilePath;
 
+    private ZipFile srcZipFile;
+
     public BuildAndSignApkTask(boolean keepUnsignedApkFile, String unzipApkFilePath, String signedApkPath) {
         this.keepUnsignedApkFile = keepUnsignedApkFile;
         this.unzipApkFilePath = unzipApkFilePath;
         this.signedApkPath = signedApkPath;
+        this.srcZipFile = null;
+    }
+
+    public BuildAndSignApkTask(boolean keepUnsignedApkFile, String unzipApkFilePath, String signedApkPath, ZipFile srcZipFile) {
+        this.keepUnsignedApkFile = keepUnsignedApkFile;
+        this.unzipApkFilePath = unzipApkFilePath;
+        this.signedApkPath = signedApkPath;
+        this.srcZipFile = srcZipFile;
     }
 
     @Override
@@ -31,7 +42,7 @@ public class BuildAndSignApkTask implements Runnable {
 
         // 将文件压缩到当前apk文件的上一级目录上
         String unsignedApkPath = unzipApkFile.getParent() + File.separator + "unsigned.apk";
-        FileUtils.compressToZip(unzipApkFilePath, unsignedApkPath);
+        FileUtils.compressToZip(unzipApkFilePath, unsignedApkPath, srcZipFile);
 
         // 将签名文件复制从assets目录下复制出来
         String keyStoreFilePath = unzipApkFile.getParent() + File.separator + "keystore";

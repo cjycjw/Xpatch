@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.zip.ZipFile;
 
 public class MainCommand extends BaseCommand {
 
@@ -213,7 +214,14 @@ public class MainCommand extends BaseCommand {
                 getXposedModules(xposedModules), useWhaleHookFramework));
 
         //  compress all files into an apk and then sign it.
-        mXpatchTasks.add(new BuildAndSignApkTask(keepBuildFiles, unzipApkFilePath, output));
+        ZipFile srcZipFile = null;
+        try {
+            srcZipFile = new ZipFile(srcApkFile);
+        } catch (Throwable th) {
+            th.printStackTrace();
+            srcZipFile = null;
+        }
+        mXpatchTasks.add(new BuildAndSignApkTask(keepBuildFiles, unzipApkFilePath, output, srcZipFile));
 
         // excute these tasks
         for (Runnable executor : mXpatchTasks) {

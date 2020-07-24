@@ -59,7 +59,7 @@ public class ApkSignatureHelper {
     默认编译的版本，在java8（jdk8）上运行良好，但在java13(jdk13)和java14(jdk14)上运行会报错，
     报错行 System.out.println("  getApkSignInfo  result -->  " + certs[0]); 这个certs为空，
     尝试网上拷贝了一份PackageVerifyer.java来获取证书，也都是为空，最后放弃用JarEntry的方式获取证书，直接读取META-INF/下的*.RSA证书，这个在java14上可以运行成功，
-    见getApkSignInfo2方法，获取的证书是JarEntry获取的是一样的。
+    见getApkSignInfo2方法，获取的证书和JarEntry获取的是一样的。
     报错信息如下：
     \f0\fs22 \cf2 \CocoaLigature0 yongqiangdeMacBook-Air:~ yongqiangzhu$ java -jar /Users/yongqiangzhu/Desktop/patch.jar /Users/yongqiangzhu/Desktop/2020.6.30/HiThin.feature218.release.000000.20200628195609.aligned.apk -f -l -o haishou1.apk\
  currentDir = /Users/yongqiangzhu/. \

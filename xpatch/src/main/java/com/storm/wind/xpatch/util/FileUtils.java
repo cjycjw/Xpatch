@@ -297,6 +297,8 @@ public class FileUtils {
      *  随意建立子目录。
      *  来电秀报错的行：
      *  GifDrawable gifDrawable = (new GifDrawableBuilder()).from(context.getResources(), raw.loading_animation).build();
+     *
+     *  以此衍生出来的保护措施也特别隐蔽，如某个非资源文件故意设置成不压缩，或者可以检测zip文件总数和压缩文件总数，如果不一致则说明被重打包了。
      */
     private static void compressFile(File file, ZipOutputStream zipOut, String baseDir, ZipFile zf) throws IOException {
         if (!file.exists()) {
@@ -312,6 +314,7 @@ public class FileUtils {
                 entry1 = zf.getEntry(baseDir + file.getName());
             }
             if (null != entry1 && entry1.getMethod() == ZipEntry.STORED) {
+                //原来不压缩的文件仍然保留不压缩，其他的采用内部默认值按默认压缩处理
 //            if (file.getName().endsWith(".gif") || file.getName().endsWith(".ogg") || file.getName().endsWith(".webp")) {
                 int bytesRead;
                 byte[] buffer = new byte[1024];
